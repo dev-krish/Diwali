@@ -196,4 +196,20 @@
     clearTimeout(toastTimer);
     toastTimer = setTimeout(function () { toastEl.classList.remove('show'); }, 2400);
   }
+  // Phuljhari Sparkle Trail Effect
+document.addEventListener('mousemove', (e) => {
+  if (Math.random() > 0.3) return; // Limit spark frequency
+  const spark = document.createElement('div');
+  spark.className = 'absolute pointer-events-none rounded-full bg-amber-200 z-50 animate-ping';
+  spark.style.width = '6px';
+  spark.style.height = '6px';
+  spark.style.left = `${e.pageX}px`;
+  spark.style.top = `${e.pageY}px`;
+  spark.style.boxShadow = '0 0 8px #f59e0b';
+  document.body.appendChild(spark);
+  
+  setTimeout(() => {
+    spark.remove();
+  }, 400);
+});
 })();
