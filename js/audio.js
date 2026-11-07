@@ -19,7 +19,7 @@ window.DiwaliAudio = (function () {
     for (var i = 0; i < len; i++) data[i] = Math.random() * 2 - 1;
     return buf;
   }
-  unction ensureCtx() {
+  function ensureCtx() {
     if (!ctx) {
       var AC = window.AudioContext || window.webkitAudioContext;
       ctx = new AC();
