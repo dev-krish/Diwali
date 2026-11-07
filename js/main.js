@@ -62,6 +62,9 @@
     setAudioUI(window.DiwaliAudio.start());
   }
   audioBtn.addEventListener('click', function () {
+    if (window.DiwaliAudio && window.DiwaliAudio.ctx && window.DiwaliAudio.ctx.state === 'suspended') {
+    window.DiwaliAudio.ctx.resume();
+  }
     musicStarted = true;
     setAudioUI(window.DiwaliAudio.toggle());
   });
