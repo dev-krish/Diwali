@@ -223,5 +223,4 @@ document.addEventListener('mousemove', (e) => {
     spark.remove();
   }, 400);
 });
-});
 })();
