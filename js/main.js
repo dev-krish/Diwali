@@ -198,18 +198,30 @@
   }
   // Phuljhari Sparkle Trail Effect
 document.addEventListener('mousemove', (e) => {
-  if (Math.random() > 0.3) return; // Limit spark frequency
+  if (Math.random() > 0.3) return;
   const spark = document.createElement('div');
-  spark.className = 'absolute pointer-events-none rounded-full bg-amber-200 z-50 animate-ping';
+  spark.style.position = 'absolute';
+  spark.style.pointerEvents = 'none';
+  spark.style.borderRadius = '50%';
+  spark.style.backgroundColor = '#fde68a'; // amber-200
+  spark.style.zIndex = '9999';
   spark.style.width = '6px';
   spark.style.height = '6px';
-  spark.style.left = `${e.pageX}px`;
-  spark.style.top = `${e.pageY}px`;
+  spark.style.left = (e.pageX - 3) + 'px';
+  spark.style.top = (e.pageY - 3) + 'px';
   spark.style.boxShadow = '0 0 8px #f59e0b';
+  spark.style.transition = 'transform 0.4s ease-out, opacity 0.4s ease-out';
   document.body.appendChild(spark);
-  
+
+  // Trigger quick fade out/scale up
+  setTimeout(() => {
+    spark.style.transform = 'scale(2)';
+    spark.style.opacity = '0';
+  }, 20);
+
   setTimeout(() => {
     spark.remove();
   }, 400);
+});
 });
 })();
