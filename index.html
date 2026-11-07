@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shubh Deepavali — Personalised Diwali Greetings</title>
+  <meta name="description" content="Send personalised Diwali greetings with animated diyas, fireworks, wish lanterns and festive music." />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='18' r='10' fill='%23FF9F1C'/%3E%3Cellipse cx='16' cy='10' rx='4' ry='7' fill='%23FFD166'/%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Yatra+One&family=Marcellus&family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- Ambient festive layer: stars, rangolis, petals -->
+  <div id="ambient-festive-layer" data-testid="ambient-festive-layer" aria-hidden="true">
+    <div class="glow-orb glow-orb--magenta"></div>
+    <div class="glow-orb glow-orb--gold"></div>
+    <svg class="rangoli rangoli--left" viewBox="0 0 200 200">
+      <defs>
+        <path id="rg-petal" d="M100 12 C113 38, 113 60, 100 80 C87 60, 87 38, 100 12 Z" />
+        <circle id="rg-dot" cx="100" cy="8" r="2.6" />
+      </defs>
+      <g class="rangoli-spin rangoli-spin--cw">
+        <circle cx="100" cy="100" r="97" fill="none" stroke="#FF9F1C" stroke-width="1.4" stroke-dasharray="3 6" opacity="0.8" />
+        <circle cx="100" cy="100" r="72" fill="none" stroke="#D81159" stroke-width="1.2" opacity="0.7" />
+        <g fill="#D81159" opacity="0.85">
+          <use href="#rg-petal" />
+          <use href="#rg-petal" transform="rotate(45 100 100)" />
+          <use href="#rg-petal" transform="rotate(90 100 100)" />
+          <use href="#rg-petal" transform="rotate(135 100 100)" />
+          <use href="#rg-petal" transform="rotate(180 100 100)" />
+          <use href="#rg-petal" transform="rotate(225 100 100)" />
+          <use href="#rg-petal" transform="rotate(270 100 100)" />
+          <use href="#rg-petal" transform="rotate(315 100 100)" />
+        </g>
+        <g fill="#FFD166" opacity="0.9">
+          <use href="#rg-dot" /><use href="#rg-dot" transform="rotate(30 100 100)" />
+          <use href="#rg-dot" transform="rotate(60 100 100)" /><use href="#rg-dot" transform="rotate(90 100 100)" />
+          <use href="#rg-dot" transform="rotate(120 100 100)" /><use href="#rg-dot" transform="rotate(150 100 100)" />
+          <use href="#rg-dot" transform="rotate(180 100 100)" /><use href="#rg-dot" transform="rotate(210 100 100)" />
+          <use href="#rg-dot" transform="rotate(240 100 100)" /><use href="#rg-dot" transform="rotate(270 100 100)" />
+          <use href="#rg-dot" transform="rotate(300 100 100)" /><use href="#rg-dot" transform="rotate(330 100 100)" />
+        </g>
+        <circle cx="100" cy="100" r="26" fill="none" stroke="#06D6A0" stroke-width="2" opacity="0.85" />
+        <circle cx="100" cy="100" r="9" fill="#FF9F1C" opacity="0.9" />
+      </g>
+    </svg>
+    <svg class="rangoli rangoli--right" viewBox="0 0 200 200">
+      <g class="rangoli-spin rangoli-spin--ccw">
+        <circle cx="100" cy="100" r="97" fill="none" stroke="#D81159" stroke-width="1.4" stroke-dasharray="3 6" opacity="0.8" />
+        <circle cx="100" cy="100" r="72" fill="none" stroke="#FF9F1C" stroke-width="1.2" opacity="0.7" />
+        <g fill="#FF9F1C" opacity="0.85">
+          <use href="#rg-petal" transform="rotate(22.5 100 100)" />
+          <use href="#rg-petal" transform="rotate(67.5 100 100)" />
+          <use href="#rg-petal" transform="rotate(112.5 100 100)" />
+          <use href="#rg-petal" transform="rotate(157.5 100 100)" />
+          <use href="#rg-petal" transform="rotate(202.5 100 100)" />
+          <use href="#rg-petal" transform="rotate(247.5 100 100)" />
+          <use href="#rg-petal" transform="rotate(292.5 100 100)" />
+          <use href="#rg-petal" transform="rotate(337.5 100 100)" />
+        </g>
+        <circle cx="100" cy="100" r="26" fill="none" stroke="#FFD166" stroke-width="2" opacity="0.85" />
+        <circle cx="100" cy="100" r="9" fill="#D81159" opacity="0.9" />
+      </g>
+    </svg>
+    <div id="stars-container"></div>
+    <div id="petals-container"></div>
+  </div>
+
+  <!-- Interactive fireworks overlay -->
+  <canvas id="fireworks-canvas" data-testid="fireworks-canvas"></canvas>
+
+  <!-- Audio control -->
+  <div class="audio-control-bar" data-testid="audio-control-bar">
+    <button id="audio-toggle-btn" data-testid="audio-toggle-btn" aria-pressed="false" aria-label="Toggle festive music">
+      <span class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+      <span id="audio-label">Music Off</span>
+    </button>
+  </div>
+
+  <!-- Nav -->
+  <nav class="nav" data-testid="main-nav">
+    <a href="#greeting" class="nav-link" data-testid="nav-link-greeting">Greeting</a>
+    <a href="#thali" class="nav-link" data-testid="nav-link-thali">Puja Thali</a>
+    <a href="#lantern" class="nav-link" data-testid="nav-link-lantern">Wish Lantern</a>
+    <a href="#share" class="nav-link" data-testid="nav-link-share">Create Yours</a>
+  </nav>
+
+  <main>
+    <!-- Personalised hero -->
+    <section id="greeting" class="hero">
+      <div class="glow-card hero-card" id="personalized-greeting-hero" data-testid="personalized-greeting-hero">
+        <div class="diya diya--hero lit" aria-hidden="true">
+          <span class="glow"></span>
+          <span class="flame"></span>
+          <span class="bowl"></span>
+        </div>
+        <p class="hero-eyebrow">॥ शुभ दीपावली ॥</p>
+        <h1 class="hero-title">Happy Diwali,<br /><span id="greeting-name" data-testid="greeting-name">Dear Friend</span></h1>
+        <p class="hero-message" id="greeting-message" data-testid="greeting-message">May the divine light of Diwali spread peace, prosperity and happiness into your life. Wishing you and your family a sparkling Festival of Lights!</p>
+        <p class="hero-sender" id="greeting-sender" data-testid="greeting-sender" hidden></p>
+        <div class="hero-actions">
+          <button id="download-card-btn" data-testid="download-card-btn" class="btn btn--outline">Download Greeting Card</button>
+        </div>
+        <p class="hero-hint">Tap anywhere in the night sky to burst fireworks</p>
+      </div>
+    </section>
+
+    <!-- Virtual Puja Thali -->
+    <section id="thali" class="section" data-testid="puja-thali-section">
+      <h2 class="section-title">Light the Puja Thali</h2>
+      <p class="section-sub">Tap each diya to kindle its flame. Light all five and the sky will celebrate with you.</p>
+      <div class="thali" data-testid="thali-plate">
+        <span class="thali-deco thali-deco--sweet" aria-hidden="true"></span>
+        <button class="diya thali-diya" id="diya-1" data-testid="diya-1" aria-label="Light diya 1"><span class="glow"></span><span class="flame"></span><span class="bowl"></span></button>
+        <button class="diya thali-diya" id="diya-2" data-testid="diya-2" aria-label="Light diya 2"><span class="glow"></span><span class="flame"></span><span class="bowl"></span></button>
+        <button class="diya thali-diya" id="diya-3" data-testid="diya-3" aria-label="Light diya 3"><span class="glow"></span><span class="flame"></span><span class="bowl"></span></button>
+        <button class="diya thali-diya" id="diya-4" data-testid="diya-4" aria-label="Light diya 4"><span class="glow"></span><span class="flame"></span><span class="bowl"></span></button>
+        <button class="diya thali-diya" id="diya-5" data-testid="diya-5" aria-label="Light diya 5"><span class="glow"></span><span class="flame"></span><span class="bowl"></span></button>
+      </div>
+      <p class="thali-counter" id="diyas-lit-counter" data-testid="diyas-lit-counter">0 / 5 Diyas Lit</p>
+    </section>
+
+    <!-- Wish Lantern -->
+    <section id="lantern" class="section" data-testid="wish-lantern-section">
+      <h2 class="section-title">Release a Wish Lantern</h2>
+      <p class="section-sub">Write a wish and send it glowing into the night sky.</p>
+      <div class="lantern-controls">
+        <input type="text" id="wish-input" data-testid="wish-input" maxlength="80" placeholder="Type your Diwali wish…" />
+        <button id="release-lantern-btn" data-testid="release-lantern-btn" class="btn btn--gold">Release Lantern</button>
+      </div>
+      <div class="lantern-preview" aria-hidden="true">
+        <div class="lantern lantern--static"><span class="lantern-wish">Your wish flies here</span></div>
+      </div>
+    </section>
+
+    <!-- Shareable greeting generator -->
+    <section id="share" class="section" data-testid="greeting-form-container">
+      <h2 class="section-title">Create Your Own Greeting</h2>
+      <p class="section-sub">Personalise this page for someone you love and share the magical link.</p>
+      <div class="glow-card share-card">
+        <label class="field">
+          <span>Recipient's name</span>
+          <input type="text" id="recipient-name-input" data-testid="recipient-name-input" maxlength="40" placeholder="e.g. Priya" />
+        </label>
+        <label class="field">
+          <span>Your Diwali message</span>
+          <textarea id="message-input" data-testid="message-input" rows="3" maxlength="300" placeholder="May your life sparkle with joy…"></textarea>
+        </label>
+        <label class="field">
+          <span>Your name (sender)</span>
+          <input type="text" id="sender-name-input" data-testid="sender-name-input" maxlength="40" placeholder="e.g. Arjun" />
+        </label>
+        <button id="generate-link-btn" data-testid="generate-link-btn" class="btn btn--gold btn--wide">Generate Greeting Link</button>
+        <div id="share-link-result" data-testid="share-link-result" class="share-result" hidden>
+          <input type="text" id="share-link-output" data-testid="share-link-output" readonly />
+          <div class="share-actions">
+            <button id="copy-link-btn" data-testid="copy-link-btn" class="btn btn--magenta">Copy Link</button>
+            <a id="whatsapp-share-btn" data-testid="whatsapp-share-btn" class="btn btn--emerald" href="#" target="_blank" rel="noopener noreferrer">Share on WhatsApp</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <p>Crafted with light · Music is synthesised live in your browser — no downloads needed</p>
+    </footer>
+  </main>
+
+  <!-- Blessing modal -->
+  <div id="blessing-modal" data-testid="blessing-modal" class="modal" hidden>
+    <div class="glow-card modal-card">
+      <p class="modal-eyebrow">॥ लक्ष्मी माता की जय ॥</p>
+      <h3 class="modal-title">The Thali Glows Complete!</h3>
+      <p class="modal-text">May Goddess Lakshmi bless your home with wealth, wisdom and endless light. Shubh Deepavali!</p>
+      <button id="blessing-close-btn" data-testid="blessing-close-btn" class="btn btn--gold">Continue Celebrating</button>
+    </div>
+  </div>
+
+  <div id="toast" data-testid="toast-copy-success" class="toast" role="status"></div>
+
+  <script src="js/audio.js"></script>
+  <script src="js/fireworks.js"></script>
+  <script src = "js/card.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
